@@ -1,6 +1,6 @@
 #ifndef STOCK_HPP
 #define STOCK_HPP
-
+#include <iostream>
 #include <string>
 
 namespace stockSpace {
@@ -13,20 +13,16 @@ namespace stockSpace {
         double price;
         
     public:
-        stock(/* args */){};
-        ~stock(){};
+        stock(std::string ID, std::string description, double price);
+        ~stock();
 
-        std::string getID(){
-            return ID;
-        };
+        std::string getID();
 
-        std::string getDescription(){
-            return description;
-        };
+        std::string getDescription();
 
-        double getPrice(){
-            return price;
-        };
+        double getPrice();
+
+        friend std::ostream& operator<<(std::ostream& os, const stock& outputStock);
     };
 }
 #endif

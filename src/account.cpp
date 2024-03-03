@@ -4,14 +4,20 @@
 namespace account{
     account::account(    
         std::string name,
-        std::string pass) : 
+        std::string pass,
+        int acc) : 
         account_name(name),
-        password(pass)
+        password(pass),
+        account_nr(acc)
         {
             dateCreated = time(0);
-            account_nr = 1;
         }
 
     account::~account(){}
+
+    void account::displayTransactions(){
+        std::cout << transactions << std::endl;
+    }
+
 }
 

@@ -16,18 +16,22 @@ namespace account {
         /* data */
         std::string account_name;
         std::string password;
-        std::string account_nr;
+        int account_nr;
         std::time_t dateCreated;
         std::time_t dateDeleted;
         std::vector<transactionSpace::transaction> transactions;
         std::vector<stockSpace::stock> stocks;
     public:
-        account(std::string account_name, std::string password);
+        account(std::string account_name, std::string password, int account_nr);
         ~account();
 
         void displayAccount(){
-            std::cout << account_name << password << account_nr << dateCreated << std::endl;
+            std::cout << "Account name: " << account_name << std::endl << "Account password: " << password << std::endl
+             << "Account number: " << account_nr << std::endl << "Date created: " << dateCreated << std::endl;
         };
+
+        void displayTransactions();
+
     };
 }
 #endif

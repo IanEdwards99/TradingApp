@@ -24,6 +24,8 @@ namespace transactionSpace{
             {};
 
         ~transaction(){};
+
+        // friend std::ostream& operator<<(std::ostream& os, const stock& outputStock);
     };
 }
 #endif
