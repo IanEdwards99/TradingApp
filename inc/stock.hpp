@@ -3,26 +3,24 @@
 #include <iostream>
 #include <string>
 
-namespace stockSpace {
-    class stock
-    {
-    private:
-        /* data */
-        std::string ID;
-        std::string description;
-        double price;
-        
-    public:
-        stock(std::string ID, std::string description, double price);
-        ~stock();
+class stock
+{
+private:
+    /* data */
+    std::string ID;
+    std::string description;
+    double price;
+    
+public:
+    stock(std::string ID, std::string description, double price);
+    ~stock();
 
-        std::string getID();
+    std::string getID();
 
-        std::string getDescription();
+    std::string getDescription();
 
-        double getPrice();
+    double getPrice();
 
-        friend std::ostream& operator<<(std::ostream& os, const stock& outputStock);
-    };
-}
+    friend std::ostream& operator<<(std::ostream& os, const stock& outputStock);
+};
 #endif
