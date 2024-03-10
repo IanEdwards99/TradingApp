@@ -9,7 +9,7 @@ transaction::transaction(std::time_t date, stock stockName, double amount, doubl
 transaction::~transaction(){}
 
 std::ostream& operator<<(std::ostream& os, const transaction& outputTransaction) {
-    auto val = outputTransaction.transactedStock;
+    stock val = outputTransaction.transactedStock;
     os << "Transaction for stock: " << val.getID() << std::endl <<
     "Transaction date: " << outputTransaction.transactionDate << std::endl <<
     "Share quantity: " << outputTransaction.quantity << std::endl << 

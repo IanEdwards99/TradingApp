@@ -7,10 +7,10 @@ ODIR = obj
 
 LIBS= 
 
-_DEPS = account.hpp transaction.hpp stock.hpp
+_DEPS = menu.hpp dataService.hpp account.hpp transaction.hpp stock.hpp
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o account.o transaction.o stock.o 
+_OBJ = main.o menu.o dataService.o account.o transaction.o stock.o 
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 #Rule for all files of .o extension (compile using relevant .c file and dependencies.)
