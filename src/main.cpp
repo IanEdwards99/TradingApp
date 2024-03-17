@@ -2,15 +2,6 @@
 #include "menu.hpp"
 #include <vector>
 
-void displayStockList(std::vector<stock> stockList){
-    std::cout << "===============================================" << std::endl
-              << "Currently available stocks on Janky Trades Ltd." << std::endl
-              << "===============================================" << std::endl;
-    for (auto i : stockList){
-        std::cout << i << std::endl;
-    }
-}
-
 void clearConsole() {
     // CSI[2J clears the screen, CSI[H moves the cursor to the top-left corner
     std::cout << "\x1B[2J\x1B[H";
@@ -32,20 +23,15 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T> & value){
 }
 
 int main(){
-    int account_amount = 0;
-    std::vector<stock> stocks = {stock("MSFT", "Microsoft corporation limited", 750.00), stock("GOOG", "Google enterprises", 800.00)
-    , stock("TSLA", "Tesla electric vehicles", 400.00)};
     dataService myData = dataService();
-    account_amount += 1;
     myData.addAccount("iedwards", "1234", "Ian Edwards");
     myData.displayAllAccounts();
-    std::cout << stocks << std::endl;
+    std::cout << myData.getStocks() << std::endl;
 
     // //User buys a MSFT share:
-    // int status = Accounts[0].buyShare(stocks[0], 3);
-    // std::cout << Accounts[0].getTransactions() << std::endl;
+    int status = myData.getAccount().buyShare(myData.getStocks()[0], 3);
 
-    BaseMenu* currentMenu = new homepage(&myData);
+    BaseMenu* currentMenu = new homepage(myData);
     bool quitSelected = false;
     while (!quitSelected)
     {

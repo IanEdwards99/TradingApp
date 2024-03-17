@@ -17,6 +17,7 @@ private:
 public:
     transaction(std::time_t date, stock stockName, double amount, double value);
     ~transaction();
+    operator std::string() const;
     friend std::ostream& operator<<(std::ostream& os, const transaction& outputTransaction);
 };
 #endif

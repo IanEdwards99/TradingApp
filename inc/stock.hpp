@@ -12,7 +12,10 @@ private:
     double price;
     
 public:
+    stock();
+    
     stock(std::string ID, std::string description, double price);
+    
     ~stock();
 
     std::string getID();
@@ -22,5 +25,7 @@ public:
     double getPrice();
 
     friend std::ostream& operator<<(std::ostream& os, const stock& outputStock);
+
+    operator std::string() const;
 };
 #endif

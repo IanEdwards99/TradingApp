@@ -23,6 +23,7 @@ namespace account {
         std::vector<transaction> transactions;
         std::vector<stock> stocks;
     public:
+        account();
         account(std::string username, std::string password, std::string account_name, int account_nr);
         ~account();
 
@@ -30,10 +31,12 @@ namespace account {
         template<typename T>
         friend std::ostream& operator<<(std::ostream& os, const std::vector<T> & value);      
         int getAccountNr();
+        std::string getCustomerName();
         std::vector<transaction> getTransactions();
         std::vector<stock> getStocks();
         int buyShare(stock stock, int quantity);
         int login(std::string username, std::string password);
+        operator std::string() const;
     };
 }
 #endif

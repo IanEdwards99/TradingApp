@@ -2,6 +2,8 @@
 #include <string>
 
 namespace account{
+    account::account(){}
+
     account::account(  
         std::string username,  
         std::string pass,
@@ -28,8 +30,14 @@ namespace account{
         return account_nr;
     }
 
+    std::string account::getCustomerName(){
+        return customer_name;
+    }
+
     std::vector<transaction> account::getTransactions(){
-        return transactions;
+        for (auto i: account::transactions)
+            std::cout << i << std::endl;
+        return account::transactions;
     }
 
     std::vector<stock> account::getStocks(){
@@ -37,7 +45,9 @@ namespace account{
     }
 
     int account::buyShare(stock stock, int quantity){
-        transactions.push_back(transaction(time(0), stock, quantity, stock.getPrice()*quantity));
+        this->transactions.push_back(transaction(time(0), stock, quantity, stock.getPrice()*quantity));
+        auto mT = getTransactions();
+        this->stocks.push_back(stock);
         return 0;
     }
 
@@ -46,6 +56,14 @@ namespace account{
             return true;
         }
         else return false;
+    }
+
+    account::operator std::string() const{
+        std::string output = "Username: " + username + "\nCustomer Name: " + customer_name + "\nAccount number: " + std::to_string(account_nr) + "\nList of owned shares:\n";
+        for (auto i : stocks){
+            output += i;
+        }
+        return output;
     }
 }
 
