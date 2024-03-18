@@ -10,8 +10,6 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T> & value){
     return os;
 }
 
-BaseMenu::BaseMenu(){}
-
 BaseMenu::BaseMenu(dataService& data_service) : menuData(data_service)
 { 
     menuText = "This shouldn't ever be shown!"; 
@@ -40,7 +38,7 @@ BaseMenu* homepage::getNextMenu(char choice, bool& iIsQuitOptionSelected) // Thi
         {
             if (homepage::login())
             {
-                aNewMenu = new userHome(menuData); // should accept an account object to create menu with correct data... so change dataService::login to return an account.
+                aNewMenu = new userHome(menuData);
             }
             else std::cout << "Incorrect login credentials provided, please try again!" << std::endl; // line getting cleaned up, find a better way.
             break;
@@ -97,7 +95,7 @@ account::account homepage::createAccount(){ // return unique_ptr instead
 userHome::userHome(dataService& data_service) : BaseMenu(data_service)
 { menuText = std::string(
     "=============================\n") +
-    " Welcome " + data_service.getAccount().getCustomerName() + "\n" + 
+    " Welcome " + menuData.getAccount()->getCustomerName() + "\n" + 
     "=============================\n" +
     "q to exit application.\n" +
     "1: View stocks\n" +
@@ -134,12 +132,13 @@ stockMenu::stockMenu(dataService& data_service) : BaseMenu(data_service)
     "Currently available stocks on Janky Trades Ltd.\n" +
     "===============================================\n"
     "(Press \"b\" to go back)\n"                      ;
-    for (auto i : data_service.getStocks()){
+    for (auto i : menuData.getStocks()){
         menuText += i.getID() + " " + std::to_string(i.getPrice()) + "\n";
     }
     menuText += "-----------------------\nCurrently owned stocks:\n-----------------------\n";
-    for (auto i : data_service.getAccount().getStocks()){
+    for (auto i : menuData.getAccount()->getStocks()){
         menuText += i;
+        menuText += "/n";
     }
     menuText += std::string(
     "\n-----------------------\nq to exit application.\n") +
@@ -188,10 +187,10 @@ BaseMenu *stockMenu::getNextMenu(char choice, bool& iIsQuitOptionSelected)
 TransactionHistory::TransactionHistory(dataService& data_service) : BaseMenu(data_service)
 { menuText = std::string(
     "===============================================\n") +
-    " Transaction history for " + data_service.getAccount().getCustomerName() + "\n"
+    " Transaction history for " + menuData.getAccount()->getCustomerName() + "\n"
     "===============================================\n"
     "(Press \"b\" to go back)\n"                      ;
-    for (auto i : data_service.getAccount().getTransactions()){
+    for (auto i : menuData.getAccount()->getTransactions()){
         menuText += i;
     }
     menuText += std::string(
@@ -217,10 +216,10 @@ BaseMenu *TransactionHistory::getNextMenu(char choice, bool& iIsQuitOptionSelect
 accountDetailsMenu::accountDetailsMenu(dataService& data_service) : BaseMenu(data_service)
 { menuText = std::string(
     "===============================================\n") +
-    " Account details for " + data_service.getAccount().getCustomerName() + "\n"
+    " Account details for " + menuData.getAccount()->getCustomerName() + "\n"
     "===============================================\n"
     "(Press \"b\" to go back)\n"                      ;
-    menuText += data_service.getAccount();
+    menuText += *menuData.getAccount();
     menuText += "\n-----------------------\nq to exit application.\n";
 }
 BaseMenu *accountDetailsMenu::getNextMenu(char choice, bool& iIsQuitOptionSelected)
@@ -265,9 +264,9 @@ BaseMenu *stockPage::getNextMenu(char choice, bool& iIsQuitOptionSelected)
             std::cin >> choice;
             if (choice == 'Y')
             {
-                std::cout << std::to_string(quantity) + setStock.getID() + " shares successfully purchased to " + menuData.getAccount().getCustomerName() + " account." << std::endl;
-                int status = menuData.getAccount().buyShare(setStock, quantity);
-                std::cout << menuData.getAccount().getTransactions() << std::endl;
+                std::cout << std::to_string(quantity) + " " + setStock.getID() + " shares successfully purchased to " + menuData.getAccount()->getCustomerName() << std::endl;
+                int status = menuData.getAccount()->buyShare(setStock, quantity);
+                std::cout << menuData.getAccount()->getTransactions().back() << std::endl;
                 std::cout << "Confirm to go back (any character):" << std::endl;
                 std::cin >> choice;
             }

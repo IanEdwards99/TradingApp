@@ -11,7 +11,7 @@ public:
     virtual ~BaseMenu();
     virtual BaseMenu* getNextMenu(char iChoice, bool& iIsQuitOptionSelected) = 0;
     virtual void printText();
-    dataService menuData;
+    dataService& menuData; // Store reference to data service created in main.cpp
 
 protected:
     std::string menuText; // This string will be shared by all children (i.e. derived) classes

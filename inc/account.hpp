@@ -32,8 +32,8 @@ namespace account {
         friend std::ostream& operator<<(std::ostream& os, const std::vector<T> & value);      
         int getAccountNr();
         std::string getCustomerName();
-        std::vector<transaction> getTransactions();
-        std::vector<stock> getStocks();
+        std::vector<transaction>& getTransactions();
+        std::vector<stock>& getStocks();
         int buyShare(stock stock, int quantity);
         int login(std::string username, std::string password);
         operator std::string() const;

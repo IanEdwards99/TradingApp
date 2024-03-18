@@ -6,11 +6,13 @@ transaction::transaction(std::time_t date, stock stockName, double amount, doubl
     cost(value)
     {}
 
-transaction::~transaction(){}
+transaction::~transaction(){
+    std::cout << "Transaction deleted!" << std::endl;
+}
 
 transaction::operator std::string() const{
     stock val = transactedStock;
-    return "Transaction for stock: " + val.getID() + "\nTransaction date: " + std::to_string(transactionDate) + "\nShare quantity: " + std::to_string(quantity) + "\nTotal transaction Cost: " + std::to_string(cost);
+    return "Transaction for stock: " + val.getID() + "\nTransaction date: " + std::to_string(transactionDate) + "\nShare quantity: " + std::to_string(quantity) + "\nTotal transaction Cost: " + std::to_string(cost) + "\n";
 }
 
 std::ostream& operator<<(std::ostream& os, const transaction& outputTransaction) {

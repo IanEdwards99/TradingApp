@@ -4,13 +4,15 @@
 dataService::dataService(){}
 dataService::~dataService(){}
 
-account::account& dataService::getAccount(){
+account::account* dataService::getAccount(){
     return dataService::activeAccount;
 }
 
 void dataService::displayAllAccounts(){
     for (auto account : accounts){
-        std::cout << account << std::endl;
+        std::cout << account << std::endl << "Transactions: \n";
+        for (auto i : account.getTransactions())
+            std::cout << i << std::endl;
     }
 }
 
@@ -27,23 +29,19 @@ int dataService::addAccount(account::account userAccount){
 }
 
 int dataService::login(std::string username, std::string password){
-    for (auto account : accounts){
+    for (auto& account : accounts){
         if (account.login(username, password)){
-            activeAccount = account;
+            this->activeAccount = &account;
             return account.getAccountNr();
         }
     }
     return 0;
 }
 
-std::vector<stock> dataService::getStocks(){
+std::vector<stock>& dataService::getStocks(){
     return stocks;
 }
 
-stock dataService::getActiveStock(){
-    return dataService::activeStock;
-}
-
-void dataService::setActiveStock(stock new_stock){
-    dataService::activeStock = new_stock;
+std::vector<account::account>& dataService::getAccounts(){
+    return accounts;
 }

@@ -17,7 +17,9 @@ namespace account{
             dateCreated = time(0);
         }
 
-    account::~account(){}
+    account::~account(){
+        std::cout << "Account deleted" << std::endl;
+    }
 
     std::ostream& operator<<(std::ostream& os, const account & outputAccount){
         os << "Username: " << outputAccount.username << std::endl << "Account password: " << outputAccount.password << std::endl 
@@ -34,19 +36,16 @@ namespace account{
         return customer_name;
     }
 
-    std::vector<transaction> account::getTransactions(){
-        for (auto i: account::transactions)
-            std::cout << i << std::endl;
+    std::vector<transaction>& account::getTransactions(){
         return account::transactions;
     }
 
-    std::vector<stock> account::getStocks(){
+    std::vector<stock>& account::getStocks(){
         return stocks;
     }
 
     int account::buyShare(stock stock, int quantity){
         this->transactions.push_back(transaction(time(0), stock, quantity, stock.getPrice()*quantity));
-        auto mT = getTransactions();
         this->stocks.push_back(stock);
         return 0;
     }
@@ -59,9 +58,10 @@ namespace account{
     }
 
     account::operator std::string() const{
-        std::string output = "Username: " + username + "\nCustomer Name: " + customer_name + "\nAccount number: " + std::to_string(account_nr) + "\nList of owned shares:\n";
+        std::string output = "Username: " + username + "\nCustomer Name: " + customer_name + "\nAccount number: " + std::to_string(account_nr) + "\n-----------------------\nList of owned shares:\n-----------------------\n";
         for (auto i : stocks){
             output += i;
+            output += "\n";
         }
         return output;
     }
