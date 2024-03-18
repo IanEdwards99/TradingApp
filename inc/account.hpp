@@ -21,7 +21,7 @@ namespace account {
         std::time_t dateCreated;
         std::time_t dateDeleted;
         std::vector<transaction> transactions;
-        std::vector<stock> stocks;
+        // std::vector<stock> stocks;
     public:
         account();
         account(std::string username, std::string password, std::string account_name, int account_nr);
@@ -33,7 +33,7 @@ namespace account {
         int getAccountNr();
         std::string getCustomerName();
         std::vector<transaction>& getTransactions();
-        std::vector<stock>& getStocks();
+        std::vector<stock> getStocks() const;
         int buyShare(stock stock, int quantity);
         int login(std::string username, std::string password);
         operator std::string() const;

@@ -19,5 +19,6 @@ public:
     ~transaction();
     operator std::string() const;
     friend std::ostream& operator<<(std::ostream& os, const transaction& outputTransaction);
+    stock getStock();
 };
 #endif

@@ -136,9 +136,9 @@ stockMenu::stockMenu(dataService& data_service) : BaseMenu(data_service)
         menuText += i.getID() + " " + std::to_string(i.getPrice()) + "\n";
     }
     menuText += "-----------------------\nCurrently owned stocks:\n-----------------------\n";
-    for (auto i : menuData.getAccount()->getStocks()){
+    for (const auto i : menuData.getAccount()->getStocks()){
         menuText += i;
-        menuText += "/n";
+        menuText += "\n";
     }
     menuText += std::string(
     "\n-----------------------\nq to exit application.\n") +

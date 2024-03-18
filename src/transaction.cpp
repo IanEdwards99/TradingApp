@@ -6,9 +6,7 @@ transaction::transaction(std::time_t date, stock stockName, double amount, doubl
     cost(value)
     {}
 
-transaction::~transaction(){
-    std::cout << "Transaction deleted!" << std::endl;
-}
+transaction::~transaction(){}
 
 transaction::operator std::string() const{
     stock val = transactedStock;
@@ -23,6 +21,10 @@ std::ostream& operator<<(std::ostream& os, const transaction& outputTransaction)
     "Total transaction Cost: " << outputTransaction.cost << std::endl;
 
     return os;
+}
+
+stock transaction::getStock(){
+    return transactedStock;
 }
 
 
