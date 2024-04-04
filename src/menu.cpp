@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <stdexcept>
 #include "menu.hpp"
 
 template<typename T>
@@ -40,7 +41,7 @@ BaseMenu* homepage::getNextMenu(char choice, bool& iIsQuitOptionSelected) // Thi
             {
                 aNewMenu = new userHome(menuData);
             }
-            else std::cout << "Incorrect login credentials provided, please try again!" << std::endl; // line getting cleaned up, find a better way.
+            else menuText += "\nIncorrect login credentials provided, please try again!";
             break;
         }
         case '2': //create Account chosen
@@ -254,25 +255,45 @@ BaseMenu *stockPage::getNextMenu(char choice, bool& iIsQuitOptionSelected)
     switch (choice)
     {
         case '1':
-        {   int quantity;
+        {   std::string input;
             double total_cost;
-            char choice;
+            std::string confirmation_choice;
             std::cout << "Number of shares to purchase: " << std::endl;
-            std::cin >> quantity;
-            std::cout << "Total amount due: " + std::to_string(quantity*(setStock.getPrice())) << std::endl;
-            std::cout << "Please confirm the transaction (Y/N): " << std::endl;
-            std::cin >> choice;
-            if (choice == 'Y')
-            {
-                std::cout << std::to_string(quantity) + " " + setStock.getID() + " shares successfully purchased to " + menuData.getAccount()->getCustomerName() << std::endl;
-                int status = menuData.getAccount()->buyShare(setStock, quantity);
-                std::cout << menuData.getAccount()->getTransactions().back() << std::endl;
-                std::cout << "Confirm to go back (any character):" << std::endl;
-                std::cin >> choice;
+            try{
+                std::cin >> input;
+                int quantity = std::stoi(input);
+                std::cout << "Total amount due: " + std::to_string(quantity*(setStock.getPrice())) << std::endl;
+                //Catch if entered amount is more than balance.
+                if (quantity*(setStock.getPrice()) > menuData.getAccount()->getBalance()){
+                    std::cout << "Insufficient funds! Please try adding funds. Press any key to continue:" << std::endl;
+                    std::cin >> input;
+                    break;
+                }
+                std::cout << "Please confirm the transaction (Y/N): " << std::endl;
+                std::cin >> confirmation_choice;
+                if (confirmation_choice == "Y" || confirmation_choice == "y" || confirmation_choice == "yes" || confirmation_choice == "YES")
+                {
+                    int status = menuData.getAccount()->buyShare(setStock, quantity);
+                    if (status)
+                    {
+                        std::cout << std::to_string(quantity) + " " + setStock.getID() + " shares successfully purchased to " + menuData.getAccount()->getCustomerName() << std::endl;
+                        std::cout << menuData.getAccount()->getTransactions().back() << std::endl;
+                        std::cout << "Confirm to go back (any character):" << std::endl;
+                        std::cin >> choice;
+                    }
+                    else throw std::invalid_argument("Impossible situation - higher cost than funds available. Exiting...");
+                }
+                else
+                {
+                    std::cout << "Purchase cancelled. Confirm to return to stock overview." << std::endl;
+                    std::cin >> choice;
+                }
             }
-            else {
-                std::cout << "Purchase cancelled. Confirm to return to stock overview." << std::endl;
-                std::cin >> choice;
+            catch(const std::invalid_argument& e)
+            {
+                std::cout << "Incorrect input provided - please only enter numerical values when asked. Press any key to continue:" << std::endl;
+                input = "";
+                std::cin >> input;
             }
             //No new menu assigned so it stays as previously set.
             break;

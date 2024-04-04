@@ -35,7 +35,7 @@ int main(){
     bool quitSelected = false;
     while (!quitSelected)
     {
-        // clearConsole();
+        clearConsole();
         currentMenu->printText();
         char choice = 0;
         std::cin >> choice;

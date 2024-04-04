@@ -10,12 +10,12 @@ class transaction
 private:
     /* data */
     std::time_t transactionDate;
-    stock transactedStock;
-    double quantity;
-    double cost;
+    stock transactedStock; // stock being bought.
+    double quantity; // quantity of stock.
+    double cost; // current cost of stock at that moment.
 
 public:
-    transaction(std::time_t date, stock stockName, double amount, double value);
+    transaction(std::time_t date, stock stockName, double amount);
     ~transaction();
     operator std::string() const;
     friend std::ostream& operator<<(std::ostream& os, const transaction& outputTransaction);
