@@ -24,7 +24,7 @@ class homepage : public BaseMenu // FirstMenu is default menu (login and create 
         homepage(dataService& data_service);
         int login();
         BaseMenu* getNextMenu(char choice, bool& iIsQuitOptionSelected);
-        account::account createAccount();
+        int createAccount();
 };
 
 class userHome : public BaseMenu

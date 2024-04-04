@@ -33,7 +33,7 @@ homepage::homepage(dataService& data_service) : BaseMenu(data_service)
 BaseMenu* homepage::getNextMenu(char choice, bool& iIsQuitOptionSelected) // This is us actually defining the pure virtual method above
 {
     BaseMenu *aNewMenu = nullptr; // We're setting up the pointer here, but makin sure it's null (0)
-    switch (choice) // Notice - I have only done "options". You would obviously need to do this for all of your menus
+    switch (choice) 
     {
         case '1': //login chosen
         {
@@ -41,12 +41,19 @@ BaseMenu* homepage::getNextMenu(char choice, bool& iIsQuitOptionSelected) // Thi
             {
                 aNewMenu = new userHome(menuData);
             }
-            else menuText += "\nIncorrect login credentials provided, please try again!";
+            else menuText += "\nIncorrect login credentials provided. Please make another selection:";
             break;
         }
         case '2': //create Account chosen
         {
-            menuData.addAccount(createAccount());
+            int abortStatus = createAccount(); // consider adding pointer argument to receive new account instead.
+            if (abortStatus == 1)
+            {
+                iIsQuitOptionSelected = true;
+            }
+            else if (abortStatus == 2){
+                menuText += "\nAborted account creation.";
+            }
             break;}
         case 'q': // Quit
         {
@@ -69,28 +76,57 @@ int homepage::login(){
     return menuData.login(username, password);
 }
 
-account::account homepage::createAccount(){ // return unique_ptr instead
+int checkForExit(std::string input){
+    if (input == "q")
+    {
+        return 1;
+    }
+    else if (input == "b")
+    {
+        return 2;
+    }
+    return 0;
+}
+
+int homepage::createAccount(){ // return unique_ptr instead
     std::cout << "Please enter a username:" << std::endl;
     std::string username;
     std::string password;
     std::string password_2;
     std::string fullname;
     std::cin >> username;
+    int exitCheck = checkForExit(username);
+    if (exitCheck != 0)
+        return exitCheck;
     std::cout << "Please enter a password:" << std::endl;
     std::cin >> password;
+    exitCheck = checkForExit(password);
+    if (exitCheck != 0)
+        return exitCheck;
     std::cout << "Please re-enter your password:" << std::endl;
     std::cin >> password_2;
+    exitCheck = checkForExit(password_2);
+    if (exitCheck != 0)
+        return exitCheck;
     if (password != password_2){
         do
         {
             std::cout << "Please re-enter your password:" << std::endl;
+            password_2 = "";
             std::cin >> password_2;
+            int exitCheck = checkForExit(password_2);
+            if (exitCheck != 0)
+                return exitCheck;
         } while (password != password_2);
         
     }
     std::cout << "Please enter your fullname:" << std::endl;
     std::cin >> fullname;
-    return account::account(username, password, fullname, time(0) % 1000);
+    exitCheck = checkForExit(fullname);
+    if (exitCheck != 0)
+        return exitCheck;
+    menuData.addAccount(account::account(username, password, fullname, time(0) % 1000));
+    return 0;
 }
 
 userHome::userHome(dataService& data_service) : BaseMenu(data_service)
@@ -168,7 +204,6 @@ BaseMenu *stockMenu::getNextMenu(char choice, bool& iIsQuitOptionSelected)
             if (found)
                 aNewMenu = new stockPage(menuData, selected_stock);
             else{ menuText += "\nNo stock found with given ID! Try again!"; }
-
             break;
         }
         case '2':

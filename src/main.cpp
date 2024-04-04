@@ -1,6 +1,7 @@
 #include "account.hpp"
 #include "menu.hpp"
 #include <vector>
+#include <iomanip>
 
 void clearConsole() {
     // CSI[2J clears the screen, CSI[H moves the cursor to the top-left corner
@@ -37,13 +38,13 @@ int main(){
     {
         clearConsole();
         currentMenu->printText();
-        char choice = 0;
-        std::cin >> choice;
+        std::string choice = "";
+        std::cin >> choice; // limit input to 1 character.
 
-        BaseMenu* newMenuPtr = currentMenu->getNextMenu(choice, quitSelected);
-        if (newMenuPtr != nullptr) { //if pointer is 0 like default, no new menu is created.
-            delete currentMenu;
-            currentMenu = newMenuPtr; // currentMenu is kept the same.
+        BaseMenu* newMenuPtr = currentMenu->getNextMenu(choice[0], quitSelected); // if no change, 0 or nullptr is returned.
+        if (newMenuPtr != nullptr) { //if pointer is 0 like default, no new menu is created. So if it IS nullptr, dont delete and reassign like below.
+            delete currentMenu; // remove old menu, since we have a new one now.
+            currentMenu = newMenuPtr; // currentMenu is updated to new menu.
         }
     }
 
