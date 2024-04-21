@@ -19,10 +19,10 @@ double stock::getPrice(){
 };
 
 std::ostream& operator<<(std::ostream& os, const stock& outputStock){
-    os << "Stock ID: " << outputStock.ID << "\nStock description: " << outputStock.description << "\nStock price: " << outputStock.price << std::endl;
+    os << "Stock ID: " << outputStock.ID << "\nStock description: " << outputStock.description << "\nStock price: $" << outputStock.price << std::endl;
     return os;
 };
 
 stock::operator std::string() const{
-    return "Stock ID: " + ID + "\nStock description: " + description + "\nPrice: " + std::to_string(price);
+    return "Stock ID: " + ID + "\nStock description: " + description + "\nPrice: $" + std::to_string(price);
 }

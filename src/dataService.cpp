@@ -5,7 +5,11 @@ dataService::dataService(){}
 dataService::~dataService(){}
 
 account::account* dataService::getAccount(){
-    return dataService::activeAccount;
+    if (dataService::activeAccount == nullptr){
+        throw std::runtime_error("No active account set, unexpected situation encountered. Exiting...");
+        exit(1);
+    }
+    return this->activeAccount;
 }
 
 void dataService::displayAllAccounts(){

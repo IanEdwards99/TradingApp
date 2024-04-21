@@ -8,7 +8,7 @@ class dataService
 private:
     std::vector<account::account> accounts = {account::account("fliere", "1", "Floris Van Liere", 1)}; // Temporarily populate
     int account_amount = 0;
-    account::account* activeAccount;
+    account::account* activeAccount = nullptr;
     std::vector<stock> stocks = {stock("MSFT", "Microsoft corporation limited", 750.00), stock("GOOG", "Google enterprises", 800.00)
     , stock("TSLA", "Tesla electric vehicles", 400.00)}; // Fill from database eventually.
 public:

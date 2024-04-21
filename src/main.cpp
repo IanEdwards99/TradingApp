@@ -26,11 +26,12 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T> & value){
 int main(){
     dataService myData = dataService();
     myData.addAccount("iedwards", "1234", "Ian Edwards");
+    myData.getAccounts()[0].topUpBalance(4000);
+    myData.getAccounts()[1].topUpBalance(4000);
 
-    // //User buys a MSFT share:
+    // //User buys a GOOG share and other buys a MSFT share:
     int i = myData.getAccounts()[0].buyShare(myData.getStocks()[1], 2); // Give Floris 2 GOOG shares.
     int j = myData.getAccounts()[1].buyShare(myData.getStocks()[0], 3); // Give Ian 3 MSFT shares.
-    // myData.displayAllAccounts();
 
     BaseMenu* currentMenu = new homepage(myData);
     bool quitSelected = false;

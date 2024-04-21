@@ -64,6 +64,19 @@ class stockPage : public BaseMenu
         BaseMenu* getNextMenu(char choice, bool& iIsQuitOptionSelected);
 };
 
+class topupMenu : public BaseMenu
+{
+    public:
+        topupMenu(dataService& data_service);
+        BaseMenu* getNextMenu(char choice, bool& iIsQuitOptionSelected);
+};
+
+class withdrawMenu : public BaseMenu
+{
+    public:
+        withdrawMenu(dataService& data_service);
+        BaseMenu* getNextMenu(char choice, bool& iIsQuitOptionSelected);
+};
 
 
 

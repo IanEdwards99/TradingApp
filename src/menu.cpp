@@ -256,7 +256,7 @@ accountDetailsMenu::accountDetailsMenu(dataService& data_service) : BaseMenu(dat
     "===============================================\n"
     "(Press \"b\" to go back)\n"                      ;
     menuText += *menuData.getAccount();
-    menuText += "\n-----------------------\nq to exit application.\n";
+    menuText += "\n-----------------------\n1: Topup balance\n2: Withdraw money\nq to exit application.\n";
 }
 BaseMenu *accountDetailsMenu::getNextMenu(char choice, bool& iIsQuitOptionSelected)
 {
@@ -265,10 +265,65 @@ BaseMenu *accountDetailsMenu::getNextMenu(char choice, bool& iIsQuitOptionSelect
     {
         case 'b':
         { aNewMenu = new userHome(menuData); break;}
-        case 'q':
+        case '1':
         {
-            iIsQuitOptionSelected = true; break;
+            std::cout << std::string(
+        "===============================================\n") +
+        " Topup balance for " + menuData.getAccount()->getCustomerName() + "\n" +
+        " Current balance: " + std::to_string(menuData.getAccount()->getBalance()) + 
+    "\n===============================================\n"
+        "(Press \"b\" to go back)"                      << std::endl;
+        std::cout << std::string(
+        "\n-----------------------\nq to exit application.\n") << std::endl;
+
+        std::string input;
+        try {
+            std::cout <<  "Enter the amount you wish to top up your balance by:" << std::endl;
+            std::cin >> input;
+            account::account * currAccount = menuData.getAccount();
+            currAccount->topUpBalance(std::stod(input));
+            std::cout << std::to_string(std::stod(input)) + " successfully added to your account! Press any key to continue." << std::endl;
+            std::cin >> input;
+            aNewMenu = new accountDetailsMenu(menuData);
         }
+        catch(const std::invalid_argument& e)
+        {
+            std::cout << "Incorrect input provided - please only enter numerical values when asked. Press any key to continue:" << std::endl;
+            input = "";
+            std::cin >> input;
+        }        
+        break; 
+        }
+        case '2':
+        {
+            std::cout << std::string(
+             "===============================================\n") +
+            " Withdraw money for " + menuData.getAccount()->getCustomerName() + "\n"
+            " Current balance: " + std::to_string(menuData.getAccount()->getBalance()) + 
+            "\n===============================================\n"
+            "(Press \"b\" to go back)"                      << std::endl;
+            std::cout << std::string(
+            "\n-----------------------\nq to exit application.\n") << std::endl;
+
+            std::string input;
+            try {
+                double withdrawal = 0;
+                std::cout << "Enter the amount you wish to withdraw from your account:" << std::endl;
+                std::cin >> withdrawal;
+                menuData.getAccount()->topUpBalance(withdrawal*-1);
+                std::cout << std::to_string(withdrawal) + " successfully withdrawn from your account!\nBalance remaining: $" + std::to_string(menuData.getAccount()->getBalance()) + "\nPress any key to continue:" << std::endl;
+                std::cin >> input;
+                aNewMenu = new accountDetailsMenu(menuData);
+            }
+            catch(const std::invalid_argument& e)
+            {
+                std::cout << "Incorrect input provided - please only enter numerical values when asked. Press any key to continue:" << std::endl;
+                input = "";
+                std::cin >> input;
+            }        
+            break; }
+        case 'q':
+        { iIsQuitOptionSelected = true; break; }
         default:
         { break; }
     }
@@ -301,7 +356,7 @@ BaseMenu *stockPage::getNextMenu(char choice, bool& iIsQuitOptionSelected)
                 //Catch if entered amount is more than balance.
                 if (quantity*(setStock.getPrice()) > menuData.getAccount()->getBalance()){
                     std::cout << "Insufficient funds! Please try adding funds. Press any key to continue:" << std::endl;
-                    std::cin >> input;
+                    std::cin >> input; // Accept input to allow pause and message to be read.
                     break;
                 }
                 std::cout << "Please confirm the transaction (Y/N): " << std::endl;

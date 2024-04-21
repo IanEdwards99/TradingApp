@@ -23,7 +23,7 @@ namespace account{
         os << "Username: " << outputAccount.username << std::endl << "Account password: " << outputAccount.password << std::endl 
         << "Fullname: " << outputAccount.customer_name << std::endl
         << "Account number: " << outputAccount.account_nr << std::endl << "Date created: " << outputAccount.dateCreated << std::endl
-        << "Account balance: " << outputAccount.balance << std::endl;
+        << "Account balance: $" << outputAccount.balance << std::endl;
         return os;
     }
 
@@ -75,7 +75,7 @@ namespace account{
     }
 
     account::operator std::string() const{
-        std::string output = "Username: " + username + "\nCustomer Name: " + customer_name + "\nAccount number: " + std::to_string(account_nr) + "\nAccount Balance: " + std::to_string(this->balance) + "\n-----------------------\nList of owned shares:\n-----------------------\n";
+        std::string output = "Username: " + username + "\nCustomer Name: " + customer_name + "\nAccount number: " + std::to_string(account_nr) + "\nAccount Balance: $" + std::to_string(getBalance()) + "\n-----------------------\nList of owned shares:\n-----------------------\n";
         for (auto i : getStocks()){
             output += i;
             output += "\n";
