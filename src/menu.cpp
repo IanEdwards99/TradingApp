@@ -2,6 +2,7 @@
 #include <string>
 #include <stdexcept>
 #include "menu.hpp"
+#include <unistd.h>
 
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T> & value){
@@ -66,13 +67,12 @@ BaseMenu* homepage::getNextMenu(char choice, bool& iIsQuitOptionSelected) // Thi
 }
 
 int homepage::login(){
-    std::cout << "Please enter your username:" << std::endl;
     std::string username;
     std::string password;
+    
+    std::cout << "Please enter your username:" << std::endl;
     std::cin >> username;
-    std::cout << "Please enter your password:" << std::endl;
-    std::cin >> password;
-
+    password = getpass("Please enter your password:\n");
     return menuData.login(username, password);
 }
 
@@ -89,40 +89,41 @@ int checkForExit(std::string input){
 }
 
 int homepage::createAccount(){ // return unique_ptr instead
-    std::cout << "Please enter a username:" << std::endl;
+    
     std::string username;
     std::string password;
     std::string password_2;
     std::string fullname;
+    
+    std::cout << "Please enter your fullname:\n";
+    std::cin.ignore();
+    std::getline(std::cin, fullname);
+    int exitCheck = checkForExit(fullname);
+    
+    std::cout << "Please enter a username:\n";
     std::cin >> username;
-    int exitCheck = checkForExit(username);
+    exitCheck = checkForExit(username);
     if (exitCheck != 0)
         return exitCheck;
-    std::cout << "Please enter a password:" << std::endl;
-    std::cin >> password;
+    password = getpass("Please enter a password:\n");
     exitCheck = checkForExit(password);
     if (exitCheck != 0)
         return exitCheck;
-    std::cout << "Please re-enter your password:" << std::endl;
-    std::cin >> password_2;
+    password_2 = getpass("Please re-enter your password:\n");
     exitCheck = checkForExit(password_2);
     if (exitCheck != 0)
         return exitCheck;
     if (password != password_2){
         do
         {
-            std::cout << "Please re-enter your password:" << std::endl;
-            password_2 = "";
-            std::cin >> password_2;
+            password_2 = getpass("Please re-enter your password:\n");
             int exitCheck = checkForExit(password_2);
             if (exitCheck != 0)
                 return exitCheck;
         } while (password != password_2);
         
     }
-    std::cout << "Please enter your fullname:" << std::endl;
-    std::cin >> fullname;
-    exitCheck = checkForExit(fullname);
+
     if (exitCheck != 0)
         return exitCheck;
     menuData.addAccount(account::account(username, password, fullname, time(0) % 1000));
